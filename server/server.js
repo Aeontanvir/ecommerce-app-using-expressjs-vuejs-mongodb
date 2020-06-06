@@ -2,13 +2,15 @@ const express = require("express");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 const app = express();
 
-//bFbu5LPSC6y1JIu2
-// mongodb+srv://root:<password>@online-ecommerce-lss7f.mongodb.net/<dbname>?retryWrites=true&w=majority
 mongoose.connect(
-    'mongodb+srv://root:bFbu5LPSC6y1JIu2@online-ecommerce-lss7f.mongodb.net/<dbname>?retryWrites=true&w=majority',
+    process.env.DATABASE
+    ,
     { useUnifiedTopology: true, useUnifiedTopology: true },
     (err) => {
         if (err) {
