@@ -4,7 +4,6 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 
-const User = require("./models/user");
 
 dotenv.config();
 
@@ -25,38 +24,21 @@ mongoose.connect(
 
 // Middlewares
 app.use(morgan('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
+app.use(bodyParser.json())
 
-app.get('/', (req, res) => {
-    res.json("Hello online ecommerce app");
-});
-
-app.post('/', (req, res) => {
-    let user = new User();
-    user.name = req.body.name;
-    user.email = req.body.email;
-    user.password = req.body.password;
-    user.save((err) => {
-        if (err) {
-            res.json(error);
-        } else {
-            res.json("Successfully saved");
-        }
-    });
-});
+// require apis
+const productRoutes = require("./routes/product");
+app.use("/api", productRoutes);
 
 
 
-
-
-
-
-
-app.listen(3333, err => {
+app.listen(process.env.SERVER_PORT, err => {
     if (err) {
         console.log("IF: " + err);
     } else {
-        console.log("Listening on PORT:----------------------- localhost:3333");
+        console.log("Listening on PORT:----------------------- localhost:" + process.env.SERVER_PORT);
     }
 });
