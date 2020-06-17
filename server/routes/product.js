@@ -3,18 +3,16 @@ const Product = require("../models/product");
 
 const upload = require("../middlewares/upload-photo");
 
-var bodyParser = require('body-parser')
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
-
 // POST
 
 router.post('/products', upload.single('photo'), async (req, res) => {
-    console.log("/products" + req.body.title);
+
     try {
+        console.log(req.file.location);
         let product = new Product();
         product.title = req.body.title;
         product.description = req.body.description;
-        //product.photo = req.file.location;
+        product.photo = req.file.location;
         product.price = req.body.price;
         product.stockQuantity = req.body.stockQuantity;
 
@@ -32,9 +30,31 @@ router.post('/products', upload.single('photo'), async (req, res) => {
         );
     }
 });
-router.post('/test', (req, res) => {
-    console.log("Started ---------");
-    console.dir(req.body);
+
+router.post('/test', upload.single('photo'), async (req, res) => {
+    console.log("/test");
+    console.log();
+    try {
+        let product = new Product();
+        product.title = "Test";
+        product.description = "DTest";
+        product.price = 29;
+        product.photo = req.file.location;
+        product.stockQuantity = 20;
+        let item = await product.save();
+        res.json({
+            status: true,
+            message: "Successfully saved",
+            data: item,
+        });
+    } catch (error) {
+        res.json(500,
+            {
+                success: false,
+                message: error.message
+            }
+        );
+    }
 });
 
 // GET ALL

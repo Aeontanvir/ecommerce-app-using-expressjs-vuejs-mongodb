@@ -4,7 +4,6 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 
-
 dotenv.config();
 
 const app = express();
@@ -24,21 +23,18 @@ mongoose.connect(
 
 // Middlewares
 app.use(morgan('dev'));
-app.use(bodyParser.urlencoded({
-    extended: false
-}));
-app.use(bodyParser.json())
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // require apis
 const productRoutes = require("./routes/product");
 app.use("/api", productRoutes);
 
 
-
-app.listen(process.env.SERVER_PORT, err => {
+app.listen(3333, err => {
     if (err) {
         console.log("IF: " + err);
     } else {
-        console.log("Listening on PORT:----------------------- localhost:" + process.env.SERVER_PORT);
+        console.log("Listening on PORT:----------------------- localhost:3333");
     }
 });
